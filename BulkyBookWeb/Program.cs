@@ -6,12 +6,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("DefaultConnection")
+    builder.Configuration.GetConnectionString("Deploy")
     ));
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 var app = builder.Build();
@@ -28,6 +30,7 @@ else
     app.UseHsts();
 }
 
+DatabaseManagementService.MigrationInitialisation(app);
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
